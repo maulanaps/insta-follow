@@ -36,11 +36,11 @@ const App = () => {
         </form>
         {followingSliceList && !loading &&
           <>
-            <p className="mb-3">Following by both : <b>{followingSliceList.length}</b></p>
+            <p className="mb-3">Followed by both : <b>{followingSliceList.length}</b> accounts</p>
             {followingSliceList.map((user, index) => (
-              <p className="mb-1">
+              <p key={index} className="mb-1">
                 <span>{index + 1}. </span>
-                <a href={`https://www.instagram.com/${user.username}`} target="_blank" key={index}>{user.username}</a>
+                <a href={`https://www.instagram.com/${user.username}`} target="_blank">{user.username}</a>
               </p>
             ))}
           </>

@@ -6,6 +6,8 @@ export const fetchFollowing = async (userId) => {
     let startId = 0
     const count = 200
 
+    console.log('fetch user: ', userId)
+
     const axiosConfig = {
         headers: {
             'content-Type': 'application/json',
@@ -28,12 +30,13 @@ export const fetchFollowing = async (userId) => {
 
 const compareFollowing = async (userId1, userId2) => {
 
-    const dataUser1 = await fetchFollowing(userId1)
-    const dataUser2 = await fetchFollowing(userId2)
+    const [dataUser1, dataUser2] = await Promise.all([fetchFollowing(userId1), fetchFollowing(userId2)])
 
     console.log(dataUser1.length, dataUser2.length);
 
-    const dataIntersection = dataUser1.filter(user1 => dataUser2.some(user2 => user1.username === user2.username));
+    const dataIntersection = dataUser1.filter(user1 => {
+        return dataUser2.some(user2 => user1.username === user2.username)
+    });
 
     return dataIntersection
 }
