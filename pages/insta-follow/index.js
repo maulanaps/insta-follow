@@ -12,7 +12,7 @@ const fetchGet = async ({ userId1, userId2 }) => {
 const App = () => {
   const [followingSliceList, setFollowingSliceList] = useState();
   const [loading, setLoading] = useState(false);
-  const { register, handleSubmit } = useForm()
+  const { register, handleSubmit, getValues } = useForm()
 
   const onSubmit = async (dataForm) => {
     setLoading(true)
@@ -23,6 +23,16 @@ const App = () => {
     setLoading(false)
   }
 
+  const onCookieSet = (e) => {
+    e.preventDefault()
+    const cookies = getValues('cookie').split('; ')
+
+    cookies.forEach(cookie => {
+      document.cookie = cookie
+      console.log(cookie);
+    })
+  }
+
   return (
     <>
       <Head>
@@ -30,9 +40,15 @@ const App = () => {
       </Head>
       <div className="p-5">
         <form onSubmit={handleSubmit(onSubmit)} className="mb-3">
-          <input type="text" {...register('userId1')} placeholder="Id User 1" className="input input-bordered input-primary w-full max-w-xs" />
-          <input type="text" {...register('userId2')} placeholder="Id User 2" className="ms-3 input input-bordered input-primary w-full max-w-xs" />
-          <button className="btn btn-primary ms-3" type="submit">Following</button>
+          <div>
+            <input type="text" {...register('cookie')} placeholder="Cookie" className="ms-auto input input-bordered input-success w-full max-w-[15rem]" />
+            <button className="btn btn-accent ms-3" onClick={onCookieSet}>Set</button>
+          </div>
+          <div className="mt-5">
+            <input type="text" {...register('userId1')} placeholder="Id User 1" className="input input-bordered input-primary w-full max-w-[15rem]" />
+            <input type="text" {...register('userId2')} placeholder="Id User 2" className="ms-3 input input-bordered input-primary w-full max-w-[15rem]" />
+            <button className="btn btn-primary ms-3" type="submit">Following</button>
+          </div>
         </form>
         {followingSliceList && !loading &&
           <>
