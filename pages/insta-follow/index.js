@@ -1,36 +1,25 @@
 import { useState } from "react";
 import axios from "axios";
 import Head from "next/head";
+import { useForm } from "react-hook-form";
 
 const fetchGet = async ({ userId1, userId2 }) => {
-  console.log(userId1);
   const { data } = await axios.get(`/api/followingSlice/?userId1=${userId1}&userId2=${userId2}`)
   console.log(data);
   return data
 }
 
-let renderCount = 0;
-
 const App = () => {
   const [followingSliceList, setFollowingSliceList] = useState();
   const [loading, setLoading] = useState(false);
   const [usersId, setUsersId] = useState({ userId1: '', userId2: '' });
+  const { register, handleSubmit } = useForm()
 
-  renderCount++
-
-  const handleChange = (e) => {
-    const { name, value } = e.target
-    setUsersId(prev => ({
-      ...prev,
-      [name]: value
-    }))
-  }
-
-  const handleSubmit = async (e) => {
-    e.preventDefault()
+  const onSubmit = async (dataForm) => {
     setLoading(true)
+    console.log(dataForm);
 
-    const data = await fetchGet(usersId)
+    const data = await fetchGet(dataForm)
 
     setFollowingSliceList(data)
     setLoading(false)
@@ -42,9 +31,9 @@ const App = () => {
         <title>Insta follow</title>
       </Head>
       <div className="p-5">
-        <form onSubmit={handleSubmit} className="mb-3">
-          <input type="text" name="userId1" value={usersId.userId1} onChange={handleChange} placeholder="Id User 1" className="input input-bordered input-primary w-full max-w-xs" />
-          <input type="text" name="userId2" value={usersId.userId2} onChange={handleChange} placeholder="Id User 2" className="ms-3 input input-bordered input-primary w-full max-w-xs" />
+        <form onSubmit={handleSubmit(onSubmit)} className="mb-3">
+          <input type="text" {...register('userId1')} placeholder="Id User 1" className="input input-bordered input-primary w-full max-w-xs" />
+          <input type="text" {...register('userId2')} placeholder="Id User 2" className="ms-3 input input-bordered input-primary w-full max-w-xs" />
           <button className="btn btn-primary ms-3" type="submit">Following</button>
         </form>
         {followingSliceList && !loading &&
