@@ -12,12 +12,10 @@ const fetchGet = async ({ userId1, userId2 }) => {
 const App = () => {
   const [followingSliceList, setFollowingSliceList] = useState();
   const [loading, setLoading] = useState(false);
-  const [usersId, setUsersId] = useState({ userId1: '', userId2: '' });
   const { register, handleSubmit } = useForm()
 
   const onSubmit = async (dataForm) => {
     setLoading(true)
-    console.log(dataForm);
 
     const data = await fetchGet(dataForm)
 
@@ -38,9 +36,12 @@ const App = () => {
         </form>
         {followingSliceList && !loading &&
           <>
-            <p>Following count : <b>{followingSliceList.length}</b></p>
+            <p className="mb-3">Following by both : <b>{followingSliceList.length}</b></p>
             {followingSliceList.map((user, index) => (
-              <p key={index} className="mt-3">{user.username}</p>
+              <p className="mb-1">
+                <span>{index + 1}. </span>
+                <a href={`https://www.instagram.com/${user.username}`} target="_blank" key={index}>{user.username}</a>
+              </p>
             ))}
           </>
         }
