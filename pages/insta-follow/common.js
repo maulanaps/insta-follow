@@ -1,4 +1,4 @@
-export const dummy = [
+export default dummy = [
     {
         "has_anonymous_profile_picture": false,
         "fbid_v2": "17841400056573270",
